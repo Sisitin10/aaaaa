@@ -1,0 +1,52 @@
+name: Build and release iOS IPA
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-ipa:
+    name: Build iPhone app
+    runs-on: macos-26
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Build unsigned iOS app
+        run: |
+          xcodebuild \
+            -project RealCam.xcodeproj \
+            -scheme RealCamFH6 \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/RealCamDerivedData" \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Package IPA
+        run: |
+          APP_PATH="$RUNNER_TEMP/RealCamDerivedData/Build/Products/Release-iphoneos/RealCamFH6.app"
+          IPA_ROOT="$RUNNER_TEMP/RealCamIPA"
+
+          test -d "$APP_PATH"
+          mkdir -p "$IPA_ROOT/Payload"
+          ditto "$APP_PATH" "$IPA_ROOT/Payload/RealCamFH6.app"
+          ditto -c -k --sequesterRsrc --keepParent \
+            "$IPA_ROOT/Payload" \
+            "$GITHUB_WORKSPACE/RealCamFH6-unsigned.ipa"
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --verify-tag \
+            --title "RealCam FH6 $GITHUB_REF_NAME" \
+            --generate-notes \
+            "$GITHUB_WORKSPACE/RealCamFH6-unsigned.ipa"

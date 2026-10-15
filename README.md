@@ -22,6 +22,19 @@ Allow the Hub through Windows Firewall on your private network if prompted. Keep
 
 Open `RealCam.xcodeproj` in Xcode 26 or later, select the `RealCamFH6` scheme, set your Apple development team, and run on an ARKit-capable iPhone running iOS 26 or later. The iOS deployment target is 26.0 so the app can use Apple's current Liquid Glass SwiftUI APIs.
 
+### Build an IPA with GitHub Actions
+
+The `Build and release iOS IPA` workflow runs on GitHub's macOS runner when you push a version tag. It builds only `RealCam.xcodeproj`; `WindowsHub` remains in the repository for the PC companion and is not included in the iOS build. The workflow attaches `RealCamFH6-unsigned.ipa` to a GitHub Release.
+
+From a clone of the GitHub repository, create and push a version tag to start a release:
+
+```powershell
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+This workflow creates an **unsigned** IPA because it has no Apple signing certificate or provisioning profile. iOS requires signing before the app can be installed on an iPhone, so sign the downloaded IPA with your own Apple account using an iOS sideloading/signing tool. A directly installable, Apple-distributed build would require Apple signing credentials and the appropriate provisioning setup in GitHub Actions.
+
 ## Use it
 
 1. Open the Windows Hub and connect from the iPhone.
