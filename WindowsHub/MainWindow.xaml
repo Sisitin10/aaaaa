@@ -1,0 +1,129 @@
+<Window x:Class="RealCam.WindowsHub.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RealCam FH6 Hub" Height="760" Width="1100" MinHeight="680" MinWidth="920"
+        Background="{StaticResource Canvas}" Foreground="#F4F7FA"
+        FontFamily="Segoe UI Variable Text" WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded" Closing="Window_Closing">
+    <Grid Margin="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="24" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" LastChildFill="True">
+            <Border DockPanel.Dock="Left" Width="42" Height="42" CornerRadius="14" Background="#1B3542" Margin="0,0,13,0">
+                <TextBlock Text="◉" FontSize="24" Foreground="{StaticResource Accent}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="REALCAM" FontSize="14" FontWeight="Bold" />
+                <TextBlock Text="FH6 CAMERA HUB" FontSize="10" Foreground="{StaticResource Muted}" Margin="0,3,0,0" />
+            </StackPanel>
+            <Border DockPanel.Dock="Right" CornerRadius="16" Background="#15271E" Padding="12,8" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <Ellipse x:Name="HubDot" Width="7" Height="7" Fill="#5ADA9A" VerticalAlignment="Center" Margin="0,0,8,0" />
+                    <TextBlock x:Name="HubStatus" Text="STARTING HUB" FontSize="10" FontWeight="SemiBold" Foreground="#8EE6B7" VerticalAlignment="Center" />
+                </StackPanel>
+            </Border>
+        </DockPanel>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.05*" />
+                <ColumnDefinition Width="22" />
+                <ColumnDefinition Width="0.95*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <Border Background="{StaticResource Panel}" CornerRadius="20" Padding="24">
+                    <StackPanel>
+                        <DockPanel Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="GAME INTEGRATION" FontSize="10" FontWeight="Bold" Foreground="{StaticResource Muted}" />
+                                <TextBlock Text="Forza Horizon 6" FontSize="25" FontWeight="SemiBold" Margin="0,8,0,0" />
+                            </StackPanel>
+                            <Border DockPanel.Dock="Right" Background="#172B27" CornerRadius="12" Padding="11,7" VerticalAlignment="Bottom">
+                                <TextBlock x:Name="GameBadge" Text="WAITING" FontSize="9" Foreground="#91D8B6" FontWeight="Bold" />
+                            </Border>
+                        </DockPanel>
+                        <Border Height="1" Background="#24303C" />
+                        <Grid Margin="0,18,0,0">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="Game process" FontSize="12" Foreground="{StaticResource Muted}" />
+                                <TextBlock x:Name="GameProcess" Text="Looking for FH6…" FontSize="14" Margin="0,5,0,0" />
+                            </StackPanel>
+                            <TextBlock x:Name="ProcessState" Grid.Column="1" Text="SEARCHING" Foreground="{StaticResource Muted}" FontSize="9" VerticalAlignment="Center" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="{StaticResource Panel}" CornerRadius="20" Padding="24" Margin="0,16,0,0">
+                    <StackPanel>
+                        <TextBlock Text="CAMERA BRIDGE" FontSize="10" FontWeight="Bold" Foreground="{StaticResource Muted}" />
+                        <TextBlock Text="Built for FH6 Photo Mode" FontSize="18" FontWeight="SemiBold" Margin="0,8,0,0" />
+                        <TextBlock Text="Keep the game in the foreground. Use P to enter Photo Mode; phone movement steers the camera, while the zoom slider changes focal length." TextWrapping="Wrap" Foreground="#AEB9C5" FontSize="13" LineHeight="20" Margin="0,10,0,18" />
+                        <Border Background="{StaticResource PanelRaised}" CornerRadius="13" Padding="14">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="W A S D" FontSize="11" FontWeight="Bold" Foreground="{StaticResource Accent}" VerticalAlignment="Center" />
+                                <TextBlock Text="  move     E / Q  height     mouse  look" FontSize="11" Foreground="#C3CCD5" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <Border Grid.Column="2" Background="{StaticResource Panel}" CornerRadius="20" Padding="25">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" /><RowDefinition Height="20" /><RowDefinition Height="Auto" />
+                        <RowDefinition Height="10" /><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <TextBlock Text="PAIR YOUR IPHONE" FontSize="10" FontWeight="Bold" Foreground="{StaticResource Muted}" />
+                        <TextBlock Text="Same Wi-Fi. One quick link." FontSize="20" FontWeight="SemiBold" Margin="0,8,0,0" />
+                        <TextBlock Text="Enter these details in the iPhone app’s Connect tab." FontSize="12" Foreground="#AEB9C5" Margin="0,7,0,0" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2">
+                        <TextBlock Text="PC ADDRESS" FontSize="9" FontWeight="Bold" Foreground="{StaticResource Muted}" />
+                        <DockPanel Margin="0,8,0,0">
+                            <Button DockPanel.Dock="Right" Content="Copy" Click="CopyAddress_Click" Padding="14,8" Margin="10,0,0,0" Background="{StaticResource PanelRaised}" Foreground="White" BorderThickness="0" Cursor="Hand" />
+                            <Border Background="#0D141C" CornerRadius="11" Padding="14,11">
+                                <TextBlock x:Name="AddressText" Text="Detecting network…" FontSize="15" FontFamily="Consolas" Foreground="{StaticResource Accent}" />
+                            </Border>
+                        </DockPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="4">
+                        <TextBlock Text="PAIRING CODE" FontSize="9" FontWeight="Bold" Foreground="{StaticResource Muted}" />
+                        <Border Background="#0D141C" CornerRadius="12" Padding="15,10" Margin="0,8,0,0">
+                            <TextBlock x:Name="CodeText" Text="------" FontSize="29" FontWeight="Bold" FontFamily="Consolas" Foreground="White" />
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="6">
+                        <Border Height="1" Background="#24303C" Margin="0,0,0,15" />
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <Ellipse Width="6" Height="6" Fill="{StaticResource Accent}" Margin="0,5,8,0" />
+                            <TextBlock Text="The pairing code changes when the Hub restarts." FontSize="11" Foreground="#AEB9C5" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="6" Height="6" Fill="{StaticResource Accent}" Margin="0,5,8,0" />
+                            <TextBlock Text="Keep FH6 open and use a borderless or windowed display." FontSize="11" Foreground="#AEB9C5" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <DockPanel Grid.Row="4">
+            <TextBlock DockPanel.Dock="Left" x:Name="FooterStatus" Text="LOCAL BRIDGE  ·  PORT 47821" FontSize="9" Foreground="{StaticResource Muted}" VerticalAlignment="Center" />
+            <TextBlock DockPanel.Dock="Right" Text="CAMERA INPUT STAYS ON THIS PC" FontSize="9" Foreground="{StaticResource Muted}" VerticalAlignment="Center" />
+        </DockPanel>
+    </Grid>
+</Window>
+

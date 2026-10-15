@@ -1,0 +1,12 @@
+<Application x:Class="RealCam.WindowsHub.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <SolidColorBrush x:Key="Canvas" Color="#0B1017" />
+        <SolidColorBrush x:Key="Panel" Color="#121A24" />
+        <SolidColorBrush x:Key="PanelRaised" Color="#192431" />
+        <SolidColorBrush x:Key="Accent" Color="#59D6EC" />
+        <SolidColorBrush x:Key="Muted" Color="#8D9AA9" />
+    </Application.Resources>
+</Application>
