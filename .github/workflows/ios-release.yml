@@ -2,8 +2,9 @@ name: Build and release iOS IPA
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -12,6 +13,10 @@ jobs:
   build-ipa:
     name: Build iPhone app
     runs-on: macos-26
+    if: github.ref == 'refs/heads/main'
+    concurrency:
+      group: ios-release-main
+      cancel-in-progress: true
 
     steps:
       - name: Check out source
@@ -41,12 +46,27 @@ jobs:
             "$IPA_ROOT/Payload" \
             "$GITHUB_WORKSPACE/RealCamFH6-unsigned.ipa"
 
-      - name: Publish GitHub Release
+      - name: Create or refresh the latest build release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" \
-            --verify-tag \
-            --title "RealCam FH6 $GITHUB_REF_NAME" \
-            --generate-notes \
-            "$GITHUB_WORKSPACE/RealCamFH6-unsigned.ipa"
+          RELEASE_TAG="continuous"
+          RELEASE_TITLE="RealCam FH6 - Latest build"
+          RELEASE_NOTES="Automatically updated from main at commit $GITHUB_SHA. This IPA is unsigned."
+          IPA_PATH="$GITHUB_WORKSPACE/RealCamFH6-unsigned.ipa"
+
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release edit "$RELEASE_TAG" \
+              --target "$GITHUB_SHA" \
+              --title "$RELEASE_TITLE" \
+              --notes "$RELEASE_NOTES" \
+              --prerelease
+            gh release upload "$RELEASE_TAG" "$IPA_PATH" --clobber
+          else
+            gh release create "$RELEASE_TAG" "$IPA_PATH" \
+              --target "$GITHUB_SHA" \
+              --title "$RELEASE_TITLE" \
+              --notes "$RELEASE_NOTES" \
+              --prerelease \
+              --latest=false
+          fi

@@ -24,14 +24,9 @@ Open `RealCam.xcodeproj` in Xcode 26 or later, select the `RealCamFH6` scheme, s
 
 ### Build an IPA with GitHub Actions
 
-The `Build and release iOS IPA` workflow runs on GitHub's macOS runner when you push a version tag. It builds only `RealCam.xcodeproj`; `WindowsHub` remains in the repository for the PC companion and is not included in the iOS build. The workflow attaches `RealCamFH6-unsigned.ipa` to a GitHub Release.
+The `Build and release iOS IPA` workflow runs automatically on every push to `main` and can also be started manually from the GitHub Actions page using the `main` branch. It builds only `RealCam.xcodeproj`; `WindowsHub` remains in the repository for the PC companion and is not included in the iOS build. Each run refreshes the `continuous` prerelease and replaces its `RealCamFH6-unsigned.ipa` asset, so that release always has the latest build.
 
-From a clone of the GitHub repository, create and push a version tag to start a release:
-
-```powershell
-git tag v0.1.0
-git push origin v0.1.0
-```
+Push the workflow to GitHub first. After that, every push to `main` starts a build and updates the prerelease automatically.
 
 This workflow creates an **unsigned** IPA because it has no Apple signing certificate or provisioning profile. iOS requires signing before the app can be installed on an iPhone, so sign the downloaded IPA with your own Apple account using an iOS sideloading/signing tool. A directly installable, Apple-distributed build would require Apple signing credentials and the appropriate provisioning setup in GitHub Actions.
 
